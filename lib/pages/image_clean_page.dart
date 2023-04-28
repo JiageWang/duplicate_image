@@ -1,24 +1,18 @@
-import "package:duplicate_image/pages/base_page.dart";
 import "package:flutter/material.dart";
 
-class ImageCleanPage extends BasePage {
+class ImageCleanPage extends StatefulWidget{
   static const String name = "图片清理";
   static const Icon icon = Icon(Icons.cleaning_services_outlined);
 
   const ImageCleanPage({Key? key}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _ImageCleanPage();
+}
+
+class _ImageCleanPage extends State<ImageCleanPage>{
+  @override
   Widget build(BuildContext context) {
-    return const Text(name);
-  }
-
-  @override
-  Icon getIcon() {
-    return icon;
-  }
-
-  @override
-  String getName() {
-    return name;
+    return const Center(child: Text("图片清理"));
   }
 }
