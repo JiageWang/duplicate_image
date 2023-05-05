@@ -1,6 +1,5 @@
 import 'package:duplicate_image/pages/page_list.dart';
 import 'package:flutter/material.dart';
-import 'package:power_image/power_image.dart';
 
 void main() {
   // PowerImageBinding();

@@ -1,7 +1,8 @@
 import 'dart:io';
 
+import 'package:duplicate_image/views/image_gallery_view.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ImageViewPage extends StatefulWidget {
   static const String name = "图片浏览";
@@ -14,52 +15,45 @@ class ImageViewPage extends StatefulWidget {
 }
 
 class _ImageViewPage extends State<ImageViewPage> {
-  final Map<String, List<String>> _imagePathMap = {};
+  bool _pathPicked = false;
+  late String _imagePath;
 
   @override
   void initState() {
     super.initState();
-    getImageList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        itemCount: _imagePathMap.length,
-        itemBuilder: (context, index) {
-          return ListTile(title: Text(_imagePathMap.keys.toList()[index]));
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return Wrap(
-              direction: Axis.horizontal,
-              spacing: 10,
-              runSpacing: 10,
-              children: _imagePathMap[_imagePathMap.keys.toList()[index]]!
-                  .map((path) => Image.file(File(path), height: 200, fit: BoxFit.fitHeight))
-                  .toList());
-        });
-  }
-
-  void getImageList() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = '${documentsDirectory.path}${Platform.pathSeparator}images';
-
-    Stream<FileSystemEntity> fileList = Directory(path).list(recursive: true);
-    await for (FileSystemEntity fileSystemEntity in fileList) {
-      var path = fileSystemEntity.path;
-      if (FileSystemEntity.typeSync(path) == FileSystemEntityType.file &&
-          path.endsWith(".jpg")) {
-        String dir = fileSystemEntity.parent.path;
-        if (_imagePathMap.containsKey(dir)) {
-          setState(() {
-            _imagePathMap[dir]!.add(path);
-          });
-        } else {
-          setState(() {
-            _imagePathMap[dir] = [path];
-          });
-        }
-      }
+    if (_pathPicked) {
+      return ListView(children: [ImageGalleryView(imagePath: _imagePath)]);
+    } else {
+      return ElevatedButton(
+          onPressed: () async {
+            final String? directoryPath = await getDirectoryPath();
+            if (directoryPath == null) {
+              return;
+            } else {
+              setState(() {
+                _pathPicked = true;
+                _imagePath = directoryPath;
+              });
+              print(_imagePath);
+            }
+          },
+          child: const Text("请选择文件夹"));
     }
   }
+
+// void getImageList(String path) async {
+//   Stream<FileSystemEntity> fileList = Directory(path).list(recursive: true);
+//   await for (FileSystemEntity fileSystemEntity in fileList) {
+//     var file = fileSystemEntity.path;
+//     if (FileSystemEntity.typeSync(file) == FileSystemEntityType.file &&
+//         (file.endsWith(".jpg") || file.endsWith(".png"))) {
+//       String dir = fileSystemEntity.parent.path;
+//       _imagePathList.add(dir);
+//     }
+//   }
+// }
 }
