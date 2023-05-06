@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   photo_view: ^0.14.0
   file_selector: ^0.9.3
+#  get: ^4.6.5
 
 
 dev_dependencies:

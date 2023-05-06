@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:duplicate_image/views/image_gallery_view.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';

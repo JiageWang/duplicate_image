@@ -31,7 +31,7 @@ class _ImageGalleryViewState extends State<ImageGalleryView> {
             spacing: 10,
             runSpacing: 10,
             children: imageList
-                .map((path) => ImageView(imagePath: path))
+                .map((path) => ImageView(imagePath: path, imageList: imageList,))
                 .toList())
       ],
     );
